@@ -62,6 +62,25 @@ var argv = yargs.scriptName('cypress-utils')
     description: 'Glob pattern of the test files to load',
     global: true,
   })
+  .option('browser', {
+    alias: ['b'],
+    type: 'string',
+    description: 'Browser in which the test is started.',
+    default: 'electron',
+    global: true
+  })
+  .option('headless', {
+    type: 'boolean',
+    description: 'Use headless mode',
+    default: false,
+    global: true
+  })
+  .option('quiet', {
+    type: 'boolean',
+    description: 'Use quiet mode',
+    default: true,
+    global: true
+  })
   .help()
   .alias('help', 'h')
   .demandCommand()
@@ -77,7 +96,9 @@ async function createTestSample(specIdentifiers) {
       configFile: argv.configFile,
       spec: castArray(specIdentifiers).join(','),
       reporter: 'list',
-      quiet: true,
+      browser: argv.browser,
+      headless: argv.headless,
+      quiet: argv.quiet,
     });
     return results;
   }
